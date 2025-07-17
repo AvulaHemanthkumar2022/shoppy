@@ -19,10 +19,10 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  enableCors(res); // 👈 Add this line
+  enableCors(res); 
 
   if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // 👈 Handle preflight
+    return res.status(200).end(); 
   }
 
   if (req.method !== 'POST') {

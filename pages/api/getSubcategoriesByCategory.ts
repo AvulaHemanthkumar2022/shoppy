@@ -1,3 +1,5 @@
+// pages/api/getSubcategoriesByCategory.ts
+
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import { enableCors } from '@/lib/cors';
@@ -14,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { categoryId } = req.query;
 
-  if (!categoryId || isNaN(Number(categoryId))) {
+  if (!categoryId || isNaN(Number(categoryId as string))) {
     return res.status(400).json({ message: 'Invalid or missing categoryId.' });
   }
 
