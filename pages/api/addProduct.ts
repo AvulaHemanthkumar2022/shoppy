@@ -20,11 +20,9 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  enableCors(res); // ✅ Apply CORS headers
+  enableCors(req, res);
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // Preflight request handling
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
 
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
