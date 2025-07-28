@@ -18,10 +18,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    await prisma.product.delete({
-      where: { id: Number(id) },
+    const productId = Number(id);
+  
+    // Example: remove related cart items or order items first
+    await prisma.cartItem.deleteMany({
+      where: { productId },
     });
-
+  
+    // Now delete the product
+    await prisma.product.delete({
+      where: { id: productId },
+    });
+  
     return res.status(200).json({ message: 'Product deleted successfully.' });
   } catch (error) {
     console.error('Error deleting product:', error);

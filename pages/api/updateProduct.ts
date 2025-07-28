@@ -19,9 +19,8 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  enableCors(req, res);
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
+  const isPreflight = enableCors(req, res);
+  if (isPreflight) return;
   if (req.method !== 'PUT') return res.status(405).json({ message: 'Method not allowed' });
 
   const form = formidable({
@@ -70,7 +69,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
       });
 
-      return res.status(200).json({ message: 'Product updated successfully.', product });
+      res.status(200).json({ message: 'Product updated successfully.', product });
+
     } catch (error) {
       console.error('Error updating product:', error);
       return res.status(500).json({ message: 'Internal server error.' });
